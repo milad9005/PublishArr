@@ -1,0 +1,51 @@
+plugins {
+    id("maven-publish")
+}
+
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("mavenAar") {
+                from(components["release"]) // Use "release" component for AAR
+
+                groupId = "co.example"
+                artifactId = "exampl"
+                version = "1.0.0"
+
+                // Include POM details (optional, for dependency management)
+                pom {
+                    name.set("exampl")
+                    description.set("A module for example SDK")
+                    url.set("http://yourcompany.com/sdk") // Optional, replace with your project URL
+
+                    developers {
+                        developer {
+                            id.set("your-id")
+                            name.set("Your Name")
+                            email.set("your-email@example.com")
+                        }
+                    }
+
+                    licenses {
+                        license {
+                            name.set("Apache License 2.0")
+                            url.set("http://www.apache.org/licenses/LICENSE-2.0")
+                        }
+                    }
+                }
+            }
+        }
+
+        repositories {
+            mavenLocal() // Publish to the local `.m2` repository
+        }
+    }
+}
+
+
+
+
+./gradlew :example:clean
+./gradlew :example:assembleRelease
+./gradlew :example:publishMavenAarPublicationToMavenLocal
